@@ -1,0 +1,11 @@
+@media screen and (min-width:500 max-width: 900px) {
+	.software {
+		width:130px; height:240px; background: url(software.png) 0 -240px;
+ 		}
+	}
+}
+@media screen and (min-width: 900px) {
+	.software {
+		width:130px; height:240px; background: url(software.png) 0 0px;
+ 	}
+ }
