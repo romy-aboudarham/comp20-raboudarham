@@ -15,10 +15,36 @@
 
 <script>
 	// Complete this section and create a CSS file named style.css
-	var video = document.getElementsByTagName("music_video")[0];
-	v.addEventListener("seeked", function() { document.getElementsByTagName("video")[0].play(); }, true);
-
-	document.getElementById("lyrics").innerHTML = The sun shines bright in My Old Kentucky Home;
+	var mv = document.getElementById("music_video");
+	
+	mv.addEventListener("timeupdate", function() {
+		
+		if (mv.currentTime > 1) {
+			document.getElementById("lyrics").innerHTML = "The sun shines bright in My Old Kentucky Home";
+		}
+		else if (mv.currentTime > 1) {
+			document.getElementById("lyrics").innerHTML = "The sun shines bright in My Old Kentucky Home";
+		}
+		else if (mv.currentTime > 1) {
+			document.getElementById("lyrics").innerHTML = "The sun shines bright in My Old Kentucky Home";
+		}
+		else if (mv.currentTime > 1) {
+			document.getElementById("lyrics").innerHTML = "The sun shines bright in My Old Kentucky Home";
+		}
+		else if (mv.currentTime > 1) {
+			document.getElementById("lyrics").innerHTML = "The sun shines bright in My Old Kentucky Home";
+		}
+		else if (mv.currentTime > 1) {
+			document.getElementById("lyrics").innerHTML = "The sun shines bright in My Old Kentucky Home";
+		}
+		else if (mv.currentTime > 1) {
+			document.getElementById("lyrics").innerHTML = "The sun shines bright in My Old Kentucky Home";
+		}
+		else {
+			document.innerHTML ="";
+		}
+	}, false);
+	
 </script>
 </body>
 </html>	
