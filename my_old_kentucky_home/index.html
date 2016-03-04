@@ -19,8 +19,11 @@
 	
 	mv.addEventListener("timeupdate", function() {
 		
-		if (mv.currentTime > 9 && mv.currentTime < 14) {
-			document.getElementById("lyrics").innerHTML = "The sun shines bright in My Old Kentucky Home";
+		if (mv.currentTime < 7) {
+			document.getElementById("lyrics").innerHTML = '<img src="horse.png" style= "max-height: 100px; max-width: 100px;" alt="sun" />';
+		}
+		else if (mv.currentTime > 9 && mv.currentTime < 14) {
+			document.getElementById("lyrics").innerHTML = '<img src="sun1.png" style= "max-height: 100px; max-width: 100px;" alt="sun" />';
 		}
 		else if (mv.currentTime > 15 && mv.currentTime < 21) {
 			document.getElementById("lyrics").innerHTML = "'Tis summer, the people are gay";
