@@ -60,6 +60,54 @@
 					infowindow.open(map, marker);
 				});
 			}
+			function XMLrequest()
+			{
+				var login = "CHRIS_WOODWARD";
+				var url = "https://defense-in-derpth.herokuapp.com/sendLocation";
+				var xhttp = new XMLHttpRequest();
+
+				var params = "login="+login+"&lat="+myLat+"&lng="+myLng;
+
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.setRequestHeader("Content-length", params.length);
+				xhttp.setRequestHeader("Connection", "close");
+
+				xhttp.onreadystatechange = function() {
+   					if(xhttp.readyState == 4 && xhttp.status == 200) {
+        				response = xhttp.responseText;
+        				locations = JSON.parse(response);
+        				elem = document.getElementById("map_canvas");
+    				}
+    				for(var count = 0; count < locations.landmarks.length; count++) {
+       					lat = locations.landmarks[count].geometry.coordinates;
+       					lng = locations.people[count].lng;
+    				}
+    				for(var count = 0; count < locations.people.length; count++) {
+       					plogin = locations.people[count].login;
+       					pLat = locations.people[count].lat;
+       					pLng = locations.people[count].lng;
+       					markPerson();
+    				}
+				}
+
+				xhttp.open("GET", url, true);
+				xhttp.send(params);
+			}
+			function markPerson()
+			{
+				person = new google.maps.LatLng(pLat, pLng);
+				
+				// Update map and go there...
+				map.panTo(person);
+	
+				// Create a marker
+				marker = new google.maps.Marker({
+					position: person,
+					title: plogin;
+				});
+				marker.setMap(map);
+			}
+
 		</script>
 	</head>
 	
