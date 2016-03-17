@@ -14,7 +14,7 @@
 			var request = new XMLHttpRequest();
 			var me = new google.maps.LatLng(myLat, myLng);
 			var myOptions = {
-						zoom: 13, // The larger the zoom number, the bigger the zoom
+						zoom: 15, // The larger the zoom number, the bigger the zoom
 						center: me,
 						mapTypeId: google.maps.MapTypeId.ROADMAP
 					};
@@ -26,7 +26,6 @@
 			{
 				map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 				getMyLocation();
-				XMLrequest();
 			}
 			
 			function getMyLocation() {
@@ -35,6 +34,7 @@
 						myLat = position.coords.latitude;
 						myLng = position.coords.longitude;
 						renderMap();
+						XMLrequest(myLat, myLng);
 					});
 				}
 				else {
@@ -53,7 +53,7 @@
 				marker = new google.maps.Marker({
 					position: me,
 					icon: me_image,
-					title: "Here I Am!"
+					title: "Here I am"
 				});
 				marker.setMap(map);
 					
@@ -63,38 +63,38 @@
 					infowindow.open(map, marker);
 				});
 			}
-			function XMLrequest()
+			function XMLrequest(myLat, myLng)
 			{
 				var login = "CHRIS_WOODWARD";
 				var url = "https://defense-in-derpth.herokuapp.com/sendLocation";
 				var xhttp = new XMLHttpRequest();
-
+				
 				var params = "login="+login+"&lat="+myLat+"&lng="+myLng;
 
 				xhttp.open("POST", url, true);
 				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 				xhttp.onreadystatechange = function() {
-					console.log();
    					if(xhttp.readyState == 4 && xhttp.status == 200) {
         				response = xhttp.responseText;
         				locations = JSON.parse(response);
         				console.log(locations);
-    				
-    				for(var count = 0; count < locations.landmarks.length; count++) {
-       					lLat = locations.landmarks[count].geometry.coordinates[0];
-       					lLng = locations.landmarks[count].geometry.coordinates[1];
-       					markLandmark(lLat, lLng);
+
+           			for(var count = 0; count < locations.landmarks.length; count++) {
+       					lLng = locations.landmarks[count].geometry.coordinates[0];
+       					lLat = locations.landmarks[count].geometry.coordinates[1];
+       					lname = locations.landmarks[count].properties.Location_Name;
+       					markLandmark(lname, lLat, lLng);
     				}
     				
-    				console.log(locations);
     				for(var count = 0; count < locations.people.length; count++) {
        					plogin = locations.people[count].login;
-       					pLat = locations.people[count].lat;
-       					pLng = locations.people[count].lng;
-       					markPerson(plogin, pLat, pLng);
-    				}
-    				
+       					if (plogin != "CHRIS_WOODWARD") {
+       						pLat = locations.people[count].lat;
+       						pLng = locations.people[count].lng;
+       						markPerson(plogin, pLat, pLng);
+       				}
+    				}	
     			}
 				}
 
@@ -103,10 +103,7 @@
 			function markPerson(plogin, pLat, pLng)
 			{
 				person = new google.maps.LatLng(pLat, pLng);
-				//person.setPosition(new google.maps.LatLng(pLat, pLng));
-	
-				// Create a marker
-
+		
 				var person_image = 'person.png';
 				var new_marker = new google.maps.Marker({
 					position: person,
@@ -114,18 +111,29 @@
 					icon: person_image
 				});
 				new_marker.setMap(map);
+				
+				google.maps.event.addListener(new_marker, 'click', function() {
+					infowindow.setContent(this.title);
+					infowindow.open(this.map, this);
+				});
 			}
 
-			function markLandmark(lLat, lLng)
+			function markLandmark(lname, lLat, lLng)
 			{
 				landmark = new google.maps.LatLng(lLat, lLng);
 
 				var landmark_image = 'landmark.png';
 				var new_landmark = new google.maps.Marker({
 					position: landmark,
+					landmark_name: lname,
 					icon: landmark_image
 				});
 				new_landmark.setMap(map);
+
+				google.maps.event.addListener(new_landmark, 'click', function() {
+					infowindow.setContent(this.landmark_name);
+					infowindow.open(this.map, this);
+				});
 			}
 
 		</script>
