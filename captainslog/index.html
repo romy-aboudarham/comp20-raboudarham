@@ -6,7 +6,17 @@
 	<title>Captain's Log</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script>
-	  // Your work will be done here...
+	$(document).ready(function() {
+	  $("#msg").keyup(function(e){
+	  		var code = e.which;
+	  		var message_date = new Date;
+	  		if (code == 13) e.preventDefault();
+	  		if (code == 13) {
+	  			message = $(this).val();
+	  			$("#log").html(message_date + " - " + message);
+	  		}
+	 	});
+	});
 	</script>
 </head>
 
