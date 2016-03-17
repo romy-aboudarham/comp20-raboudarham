@@ -11,6 +11,10 @@
 		<script>
 			var myLat = 0;
 			var myLng = 0;
+			var min_dist = 15;
+			var minLat = 0;
+			var minLng = 0;
+			var min_landmark;
 			var request = new XMLHttpRequest();
 			var me = new google.maps.LatLng(myLat, myLng);
 			var myOptions = {
@@ -33,8 +37,8 @@
 					navigator.geolocation.getCurrentPosition(function(position) {
 						myLat = position.coords.latitude;
 						myLng = position.coords.longitude;
-						renderMap();
 						XMLrequest(myLat, myLng);
+						renderMap();
 					});
 				}
 				else {
@@ -51,6 +55,7 @@
 				// Create a marker
 				var me_image = 'hotdog.png';
 				marker = new google.maps.Marker({
+					animation: google.maps.Animation.DROP,
 					position: me,
 					icon: me_image,
 					title: "Here I am"
@@ -61,6 +66,21 @@
 				google.maps.event.addListener(marker, 'click', function() {
 					infowindow.setContent(marker.title);
 					infowindow.open(map, marker);
+					marker.setAnimation(google.maps.Animation.BOUNCE);
+					setTimeout(function(){ marker.setAnimation(null); }, 750);
+					var MinLandmarkCoordinates = [
+    					{lat: myLat, lng: myLng},
+    					{lat: minLat, lng: minLng}
+  					];
+  					var min_path = new google.maps.Polyline({
+    				path: MinLandmarkCoordinates,
+    					geodesic: true,
+    					strokeColor: '#FF0000',
+    					strokeOpacity: 1.0,
+   						strokeWeight: 2,
+   						zIndex: 1
+  					});
+  					min_path.setMap(map);	
 				});
 			}
 			function XMLrequest(myLat, myLng)
@@ -78,14 +98,22 @@
    					if(xhttp.readyState == 4 && xhttp.status == 200) {
         				response = xhttp.responseText;
         				locations = JSON.parse(response);
-        				console.log(locations);
 
            			for(var count = 0; count < locations.landmarks.length; count++) {
        					lLng = locations.landmarks[count].geometry.coordinates[0];
        					lLat = locations.landmarks[count].geometry.coordinates[1];
        					lname = locations.landmarks[count].properties.Location_Name;
+       					distance = calculate_distance(myLat, myLng, lLat, lLng);
+       					if (distance < min_dist) {
+       						min_dist = distance;
+       						min_landmark = lname;
+       						minLng = lLng;
+       						minLat =  lLat;
+       						console.log(minLng);
+       					}
        					markLandmark(lname, lLat, lLng);
     				}
+
     				
     				for(var count = 0; count < locations.people.length; count++) {
        					plogin = locations.people[count].login;
@@ -93,10 +121,9 @@
        						pLat = locations.people[count].lat;
        						pLng = locations.people[count].lng;
        						distance = calculate_distance(myLat, myLng, pLat, pLng);
-       						console.log(distance);
        						markPerson(plogin, pLat, pLng, distance);
        				}
-    				}	
+    				}
     			}
 				}
 
@@ -122,7 +149,6 @@
                 Math.sin(dLon/2) * Math.sin(dLon/2);  
 				var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
 				var d = R * c; 
-				console.log(d);
 
 				return d;
 			}
@@ -133,9 +159,10 @@
 		        
 				var person_image = 'person.png';
 				var new_marker = new google.maps.Marker({
+					animation: google.maps.Animation.DROP,
 					position: person,
-					title: distance.toString(),
-					//plogin,
+					title: plogin,
+					dist: distance.toString(),
 					icon: person_image
 				});
 				new_marker.setMap(map);
@@ -143,6 +170,8 @@
 				google.maps.event.addListener(new_marker, 'click', function() {
 					infowindow.setContent(this.title);
 					infowindow.open(this.map, this);
+					new_marker.setAnimation(google.maps.Animation.BOUNCE);
+					setTimeout(function(){ new_marker.setAnimation(null); }, 750);
 				});
 			}
 
@@ -152,6 +181,7 @@
 
 				var landmark_image = 'landmark.png';
 				var new_landmark = new google.maps.Marker({
+					animation: google.maps.Animation.DROP,
 					position: landmark,
 					landmark_name: lname,
 					icon: landmark_image
@@ -161,6 +191,8 @@
 				google.maps.event.addListener(new_landmark, 'click', function() {
 					infowindow.setContent(this.landmark_name);
 					infowindow.open(this.map, this);
+					new_landmark.setAnimation(google.maps.Animation.BOUNCE);
+					setTimeout(function(){ new_landmark.setAnimation(null); }, 750);
 				});
 			}
 
