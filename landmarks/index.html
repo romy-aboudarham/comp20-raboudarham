@@ -92,7 +92,9 @@
        					if (plogin != "CHRIS_WOODWARD") {
        						pLat = locations.people[count].lat;
        						pLng = locations.people[count].lng;
-       						markPerson(plogin, pLat, pLng);
+       						distance = calculate_distance(myLat, myLng, pLat, pLng);
+       						console.log(distance);
+       						markPerson(plogin, pLat, pLng, distance);
        				}
     				}	
     			}
@@ -100,14 +102,40 @@
 
 				xhttp.send(params);
 			}
-			function markPerson(plogin, pLat, pLng)
+
+			function calculate_distance(myLat, myLng, pLat, pLng) {
+				Number.prototype.toRad = function() {
+   					return this * Math.PI / 180;
+				}
+				var lat2 = pLat
+				var lon2 = pLng 
+				var lat1 = myLat
+				var lon1 = myLng
+
+				var R = 6371; 
+				var x1 = lat2-lat1;
+				var dLat = x1.toRad();  
+				var x2 = lon2-lon1;
+				var dLon = x2.toRad();  
+				var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+                Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2);  
+				var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+				var d = R * c; 
+				console.log(d);
+
+				return d;
+			}
+
+			function markPerson(plogin, pLat, pLng, distance)
 			{
 				person = new google.maps.LatLng(pLat, pLng);
-		
+		        
 				var person_image = 'person.png';
 				var new_marker = new google.maps.Marker({
 					position: person,
-					title: plogin,
+					title: distance.toString(),
+					//plogin,
 					icon: person_image
 				});
 				new_marker.setMap(map);
