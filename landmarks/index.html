@@ -14,7 +14,7 @@
 			var min_dist = 15;
 			var minLat = 0;
 			var minLng = 0;
-			var min_landmark;
+			var min_landmark = "";
 			var request = new XMLHttpRequest();
 			var me = new google.maps.LatLng(myLat, myLng);
 			var myOptions = {
@@ -38,7 +38,6 @@
 						myLat = position.coords.latitude;
 						myLng = position.coords.longitude;
 						XMLrequest(myLat, myLng);
-						renderMap();
 					});
 				}
 				else {
@@ -48,17 +47,15 @@
 			function renderMap()
 			{
 				me = new google.maps.LatLng(myLat, myLng);
-				
-				// Update map and go there...
+			    marker_text = "Closest Landmark: " + "</br>" + min_landmark + "</br>" + "Distance from me: " + "</br>" + min_dist;
 				map.panTo(me);
 	
-				// Create a marker
 				var me_image = 'hotdog.png';
 				marker = new google.maps.Marker({
 					animation: google.maps.Animation.DROP,
 					position: me,
 					icon: me_image,
-					title: "Here I am"
+					title: marker_text
 				});
 				marker.setMap(map);
 					
@@ -103,15 +100,17 @@
        					lLng = locations.landmarks[count].geometry.coordinates[0];
        					lLat = locations.landmarks[count].geometry.coordinates[1];
        					lname = locations.landmarks[count].properties.Location_Name;
+       					ldetails = locations.landmarks[count].properties.Details;
        					distance = calculate_distance(myLat, myLng, lLat, lLng);
        					if (distance < min_dist) {
        						min_dist = distance;
        						min_landmark = lname;
        						minLng = lLng;
        						minLat =  lLat;
-       						console.log(minLng);
        					}
-       					markLandmark(lname, lLat, lLng);
+       					if (distance <= 1) {
+       						markLandmark(lname, lLat, lLng, ldetails);
+       					}
     				}
 
     				
@@ -121,9 +120,12 @@
        						pLat = locations.people[count].lat;
        						pLng = locations.people[count].lng;
        						distance = calculate_distance(myLat, myLng, pLat, pLng);
+       						if (distance <= 1) {
        						markPerson(plogin, pLat, pLng, distance);
+       					}
        				}
     				}
+    				renderMap();
     			}
 				}
 
@@ -156,12 +158,12 @@
 			function markPerson(plogin, pLat, pLng, distance)
 			{
 				person = new google.maps.LatLng(pLat, pLng);
-		        
+		        var person_text = plogin + "</br>" + "Distance from me: " + "</br>" + distance;
 				var person_image = 'person.png';
 				var new_marker = new google.maps.Marker({
 					animation: google.maps.Animation.DROP,
 					position: person,
-					title: plogin,
+					title: person_text,
 					dist: distance.toString(),
 					icon: person_image
 				});
@@ -175,21 +177,22 @@
 				});
 			}
 
-			function markLandmark(lname, lLat, lLng)
+			function markLandmark(lname, lLat, lLng, ldetails)
 			{
 				landmark = new google.maps.LatLng(lLat, lLng);
+				landmark_text = lname + "</br>" + ldetails;
 
 				var landmark_image = 'landmark.png';
 				var new_landmark = new google.maps.Marker({
 					animation: google.maps.Animation.DROP,
 					position: landmark,
-					landmark_name: lname,
+					title: landmark_text,
 					icon: landmark_image
 				});
 				new_landmark.setMap(map);
 
 				google.maps.event.addListener(new_landmark, 'click', function() {
-					infowindow.setContent(this.landmark_name);
+					infowindow.setContent(this.title);
 					infowindow.open(this.map, this);
 					new_landmark.setAnimation(google.maps.Animation.BOUNCE);
 					setTimeout(function(){ new_landmark.setAnimation(null); }, 750);
