@@ -85,7 +85,7 @@
 				var login = "CHRIS_WOODWARD";
 				var url = "https://defense-in-derpth.herokuapp.com/sendLocation";
 				var xhttp = new XMLHttpRequest();
-				
+
 				var params = "login="+login+"&lat="+myLat+"&lng="+myLng;
 
 				xhttp.open("POST", url, true);
@@ -120,9 +120,7 @@
        						pLat = locations.people[count].lat;
        						pLng = locations.people[count].lng;
        						distance = calculate_distance(myLat, myLng, pLat, pLng);
-       						if (distance <= 1) {
        						markPerson(plogin, pLat, pLng, distance);
-       					}
        				}
     				}
     				renderMap();
