@@ -17,6 +17,14 @@
 	  			e.preventDefault();
 	  			var message = $(this).val();
 	  			var display_message = message_date + " - " + message + "</br>";
+	  			$("#log").prepend(display_message);
+	  			saved_message = localStorage.getItem("key_message");
+	  			if (saved_message == "empty_message") {
+	  				localStorage.setItem("key_message", saved_message);
+	  			} else {
+	  				saved_message = display_message + "</br> " + saved_message;
+	  				localStorage.setItem("key_message", saved_message);
+	  			}
 	  		}
 	 	});
 	});
