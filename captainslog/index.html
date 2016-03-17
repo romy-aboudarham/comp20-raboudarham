@@ -7,13 +7,16 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 	<script>
 	$(document).ready(function() {
-	  $("#msg").keyup(function(e){
-	  		var code = e.which;
+		if (localStorage.getItem('key_message') != 'empty_message') {
+			$('#log').append(localStorage.getItem('key_message'));
+		}
+	 	$('#msg').keyup(function(e){
+	  		var enter_code = e.which;
 	  		var message_date = new Date;
-	  		if (code == 13) e.preventDefault();
-	  		if (code == 13) {
-	  			message = $(this).val();
-	  			$("#log").html(message_date + " - " + message);
+	  		if (enter_code == 13) {
+	  			e.preventDefault();
+	  			var message = $(this).val();
+	  			var display_message = message_date + " - " + message + "</br>";
 	  		}
 	 	});
 	});
