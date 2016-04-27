@@ -1,12 +1,32 @@
+Romy Aboudarham
+Assignment 4 Security and Privacy Assessment of Client-Side and Server-Side
+4/26/2016
+
 1. Introduction - Provide a description of the product and what you were hired to do
 
 	When designing anything whether it's computer science based or any product in general, it is important to test your product and search for security and privacy vulnerabilities. This is a very important step that must never be overlooked in the design process because your product will be used by many people across the world and it's important to monitor what access other individuals have. 
 
 	In Assignment 4, we were given access to a partner's Assignment 2 and Assignment 3 work. We were to pretend that we were hired as a security consultant to document and resolve the security and privacy issues in the applications. 
 
-
 2. Methodology - Describe your methodology pen testing the application, including the tools that you used
+	
+	A major vulnerability in my partner's code is that I can assign anything to the "login" key. Taking advantage of this, I made a post request and sent javascript and html code which warped and redirected the page. 
+
+	When I sent a post request, I sent html code for the "login" which redirected the page to a link of a Youtube video that I chose.
+	<META http-equiv="refresh" content="5;URL=https://www.youtube.com/watch?v=5T0utQ-XWGY">
+
+	When I sent a post request, I sent javascript code that would alert when the page is loaded. This
+	is a safe way of showing me that javascript can get through. I didn't alter any code on the website yet. 
+	<script>alert(123)</script>	
+
+	Next, I decided to see if I could alter the code by accessing the CSS file through html. I was successful and made the background of Ming's website blue.
+	<style> body {background-color:blue;}</style>
+
+	Finally, I did one more alteration to the page by seeing if I could make an image appear. I was successful and put an image of a cat.
+	<img src= "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_March_2010-1.jpg" alt="Cat" style= "width:304px;height:228px;">
+
 3. Abstract of Findings - Provide an overview of all the security and privacy issues you identified. This section should be written for non-technical managers who do not have technical expertise and do not have time to read the entire document. Write this section using lay language.
+
 4. Issues Found - For each issue that you find, document:
 -Issue (e.g., database injection, really bad programming practice)
 -Location / page where issue was found
@@ -14,4 +34,5 @@
 -Description of issue. How did you find it? A screenshot of problem is excellent.
 -Proof of vulnerability. Screenshots are important.
 -Resolution. Make recommendation(s) on how issue can be resolved. Show code if possible.
+
 5. Conclusion - You can also list future considerations and recommendations with costs.
