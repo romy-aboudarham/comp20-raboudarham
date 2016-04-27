@@ -10,7 +10,7 @@ Assignment 4 Security and Privacy Assessment of Client-Side and Server-Side
 
 2. Methodology - Describe your methodology pen testing the application, including the tools that you used
 	
-	A major vulnerability in my partner's code is that I can assign anything to the "login" key. Taking advantage of this, I made a post request and sent javascript and html code which warped and redirected the page. 
+	A major vulnerability in my partner's code is that I can assign anything to the "login" key. Taking advantage of this, I made a post request and sent javascript, css, and html code which warped and redirected the page. 
 
 	When I sent a post request, I sent html code for the "login" which redirected the page to a link of a Youtube video that I chose.
 	<META http-equiv="refresh" content="5;URL=https://www.youtube.com/watch?v=5T0utQ-XWGY">
@@ -27,7 +27,33 @@ Assignment 4 Security and Privacy Assessment of Client-Side and Server-Side
 
 3. Abstract of Findings - Provide an overview of all the security and privacy issues you identified. This section should be written for non-technical managers who do not have technical expertise and do not have time to read the entire document. Write this section using lay language.
 
+	I identified an XSS vulnerability by using a harmless way to detect if characters associated with javascript were going through and manipulating the page. I used a trigger response that sent an alert to the screen. 
+
+	Since javascript, html, and css code could be sent through the post request, I found that anyone could manipulate the site and potentially put malicious content that could completely wreck a site or even get the site owner in trouble. For example, I added images and redirected the page to links that could have some copyright content on it so using the links could led to legal trouble. 
+
 4. Issues Found - For each issue that you find, document:
+
+	ISSUE: The first issue I found was that I could send HTML within my post request. This is a result of the failure to detect special characters that are associated with HTML code. A way to prevent this vulnerability is to filter through what is read in and detect characters associated with HTML. Such characters include: <, >, ', /, =, and ";
+	LOCATION: /sendLocation
+	SEVERITY OF ISSUE:
+	DECRIPTION OF ISSUE:
+	PROOF OF VULNERABILITY:
+	RESOLUTION:
+
+	ISSUE: The second issue I found was that I could send code that could access the CSS of Ming's webpage within my post request. This is a result of the failure to detect special characters that are associated with CSS code. A way to prevent this vulnerability is to filter through what is read in and detect characters associated with CSS. Such characters include: {, -, :, ;, and ,;
+	LOCATION: /sendLocation
+	SEVERITY OF ISSUE:
+	DECRIPTION OF ISSUE:
+	PROOF OF VULNERABILITY:
+	RESOLUTION:
+
+	ISSUE: The first issue I found was that I could send javascript within my post request. This is a result of the failure to detect special characters that are associated with javascript code. A way to prevent this vulnerability is to filter through what is read in and detect characters associated with javascript. Such characters include: <, >, ', and " as well as the string <script></script>.
+	LOCATION: /sendLocation
+	SEVERITY OF ISSUE:
+	DECRIPTION OF ISSUE:
+	PROOF OF VULNERABILITY:
+	RESOLUTION:
+
 -Issue (e.g., database injection, really bad programming practice)
 -Location / page where issue was found
 -Severity of issue (e.g., low, medium , or high). Justify your answer.
