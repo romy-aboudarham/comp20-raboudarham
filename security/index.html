@@ -33,32 +33,27 @@ Assignment 4 Security and Privacy Assessment of Client-Side and Server-Side
 
 4. Issues Found - For each issue that you find, document:
 
-	ISSUE: The first issue I found was that I could send HTML within my post request. This is a result of the failure to detect special characters that are associated with HTML code. A way to prevent this vulnerability is to filter through what is read in and detect characters associated with HTML. Such characters include: <, >, ', /, =, and ";
+	ISSUE: The first issue I found was that I could send HTML within my post request. This is a result 		of the failure to detect special characters that are associated with HTML code. 
 	LOCATION: /sendLocation
-	SEVERITY OF ISSUE:
-	DECRIPTION OF ISSUE:
-	PROOF OF VULNERABILITY:
-	RESOLUTION:
+	SEVERITY OF ISSUE: Med severity because a lot of the page can be accessed and modified through the 		HTML. I can add as much content to the page as I want without any restrictions. It can become 		high severity when redirecting occurs, but Ming can remove checkins requests so it is undoable, 	however, copyright and liability issues for the pages I redirect to can happen. 
+	DECRIPTION OF ISSUE: I found it by sending HTML code that would add to the body of of Ming's website 	 through a post request. For example, I put an image of a cat on the page.
+	PROOF OF VULNERABILITY: When sending a post request, app.post('/sendLocation'... ) call is run and 		you can see that the data for username is not parsed and filtered for unwanted characters. This 	leaves a vulnerability for HTML code to be read in as a username and saved in checkins. 			Everything in checkins is posted so it will run everything and not check for unwanted characters.	 A screenshot of the code that stores the data read in has been uploaded to github.
+	RESOLUTION: A way to prevent this vulnerability is to filter through what is read in and detect 		characters associated with HTML. Such characters include: <, >, ', /, =, and ";
 
-	ISSUE: The second issue I found was that I could send code that could access the CSS of Ming's webpage within my post request. This is a result of the failure to detect special characters that are associated with CSS code. A way to prevent this vulnerability is to filter through what is read in and detect characters associated with CSS. Such characters include: {, -, :, ;, and ,;
+	ISSUE: The second issue I found was that I could send code that could access the CSS of Ming's 			webpage within my post request. This is a result of the failure to detect special characters 		that are associated with CSS code. 
 	LOCATION: /sendLocation
-	SEVERITY OF ISSUE:
-	DECRIPTION OF ISSUE:
-	PROOF OF VULNERABILITY:
-	RESOLUTION:
+	SEVERITY OF ISSUE: Med severity since the CSS code will just manipulate how the page looks rather 		than release any private information.
+	DECRIPTION OF ISSUE: I found it by sending CSS code that would change the CSS code of Ming's website 	 through a post request. For example, I made the background blue.
+	PROOF OF VULNERABILITY: When sending a post request, app.post('/sendLocation'... ) call is run and 		you can see that the data for username is not parsed and filtered for unwanted characters. This 	leaves a vulnerability for CSS code to be read in as a username and saved in checkins. 				Everything in checkins is posted so it will run everything and not check for unwanted characters.	 A screenshot of the code that stores the data read in has been uploaded to github.
+	RESOLUTION: A way to prevent this vulnerability is to filter through what is read in and detect characters associated with CSS. Such characters include: {, -, :, ;, and ,;
 
-	ISSUE: The first issue I found was that I could send javascript within my post request. This is a result of the failure to detect special characters that are associated with javascript code. A way to prevent this vulnerability is to filter through what is read in and detect characters associated with javascript. Such characters include: <, >, ', and " as well as the string <script></script>.
+	ISSUE: The first issue I found was that I could send javascript within my post request. This is a 		result of the failure to detect special characters that are associated with javascript code. 
 	LOCATION: /sendLocation
-	SEVERITY OF ISSUE:
-	DECRIPTION OF ISSUE:
-	PROOF OF VULNERABILITY:
-	RESOLUTION:
-
--Issue (e.g., database injection, really bad programming practice)
--Location / page where issue was found
--Severity of issue (e.g., low, medium , or high). Justify your answer.
--Description of issue. How did you find it? A screenshot of problem is excellent.
--Proof of vulnerability. Screenshots are important.
--Resolution. Make recommendation(s) on how issue can be resolved. Show code if possible.
+	SEVERITY OF ISSUE: High severity because javascript is very powerful.
+	DECRIPTION OF ISSUE: I found this issue by sending an alert using <script> code which would alert when the page is loaded if javascript went through. A screenshot of the alert code in the post request has been uploaded to github.
+	PROOF OF VULNERABILITY: When sending a post request, app.post('/sendLocation'... ) call is run and you can see that the data for username is not parsed and filtered for unwanted characters. This leaves a vulnerability for javascript code to be read in as a username and saved in checkins. Everything in checkins is posted so it will run everything and not check for unwanted characters.A screenshot of the code that stores the data read in has been uploaded to github.
+	RESOLUTION: A way to prevent this vulnerability is to filter through what is read in and detect characters associated with javascript. Such characters include: <, >, ', and " as well as the string <script></script>.
 
 5. Conclusion - You can also list future considerations and recommendations with costs.
+
+	In the future, consider security and the vulnerabilities that are in your code before and after you write your code. The structure of your code depends on a lot of things and security is very important to consider before. This is because it will save you a lot of time when trying to go back and debug your code for vulnerabilities in the end. It will also enhance your product because no one wants to release a product that can be hacked and taken control of. There aren't many costs when it comes to rereading code other that it can be a little tedious. The benefits most certainly outweight the costs of a final product with vulnerabilities. 
